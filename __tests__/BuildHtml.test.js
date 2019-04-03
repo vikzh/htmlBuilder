@@ -1,43 +1,35 @@
-import {parse, render} from '../src';
+import { parse, render } from '../src';
+import PairedTag from '../src/PairedTag';
+import SingleTag from '../src/SingleTag';
+
 
 describe('HtmlBuilder', () => {
   it('#Parse to AST', () => {
     const data = ['html', [
-      ['meta', {id: 'uniq-key'}, [
+      ['head', [
         ['title', 'hello, world!'],
       ]],
       ['body', [
-        ['br'],
+        ['h1', { class: 'header' }, 'html builder example'],
+        ['div', [
+          ['span', 'span text'],
+          ['hr'],
+        ]],
       ]],
     ]];
 
-    const expectedAst = {
-      name: 'html',
-      attributes: {},
-      body: '',
-      children: [
-        {
-          name: 'meta',
-          attributes: {id: 'uniq-key'},
-          body: '',
-          children: [
-            {
-              name: 'title', attributes: {}, body: 'hello, world!', children: [],
-            },
-          ],
-        },
-        {
-          name: 'body',
-          attributes: {},
-          body: '',
-          children: [
-            {
-              name: 'br', attributes: {}, body: '', children: [],
-            },
-          ],
-        },
-      ],
-    };
+    const expectedAst = new PairedTag('html', {}, '', [
+      new PairedTag('head', {}, '', [
+        new PairedTag('title', {}, 'hello, world!'),
+      ]),
+      new PairedTag('body', {}, '', [
+        new PairedTag('h1', { class: 'header' }, 'html builder example'),
+        new PairedTag('div', {}, '', [
+          new PairedTag('span', {}, 'span text'),
+          new SingleTag('hr'),
+        ]),
+      ]),
+    ]);
     const ast = parse(data);
     expect(ast).toEqual(expectedAst);
   });
@@ -50,7 +42,7 @@ describe('HtmlBuilder', () => {
       children: [
         {
           name: 'meta',
-          attributes: {id: 'uniq-key'},
+          attributes: { id: 'uniq-key' },
           body: '',
           children: [
             {

@@ -1,4 +1,5 @@
 import { identity } from 'lodash';
+import buildNode from './buildNode';
 
 const singleTagsList = new Set(['hr', 'img', 'br']);
 
@@ -28,10 +29,11 @@ const parse = (data) => {
     body: '',
     children: [],
   };
-  return rest.reduce((acc, arg) => {
+  const args = rest.reduce((acc, arg) => {
     const { name, process } = propertyActions.find(({ check }) => check(arg));
     return { ...acc, [name]: process(arg, parse) };
   }, root);
+  return buildNode(args);
 };
 
 const render = (data) => {
