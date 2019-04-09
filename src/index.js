@@ -36,24 +36,6 @@ const parse = (data) => {
   return buildNode(args.name, args.attributes, args.body, args.children);
 };
 
-const render = (data) => {
-  // const {
-  //   name,
-  //   attributes,
-  //   body,
-  //   children,
-  // } = data;
-  //
-  // const attrsLine = Object.keys(attributes)
-  //   .map(key => ` ${key}="${attributes[key]}"`).join('');
-  // const content = children.length > 0 ? children.map(render).join('') : body;
-  //
-  // if (singleTagsList.has(name)) {
-  //   return `<${name}${attrsLine}>`;
-  // }
-  //
-  // return `<${name}${attrsLine}>${content}</${name}>`;
-  return data.toString();
-};
+const render = data => data.toString();
 
 export { parse, render };
